@@ -2,9 +2,12 @@ package service;
 
 import db_connection.DbConnection;
 import modal.Acidente;
+import spark.Request;
+import spark.Response;
 
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.Arrays;
 
 public class AcidenteService {
     DbConnection connection = new DbConnection();
@@ -12,7 +15,7 @@ public class AcidenteService {
     Acidente acidente;
     Acidente[] acidentes;
 
-    public Acidente[] getALLAcidentes() throws Exception {
+    public String getALLAcidentes(Request request, Response response) throws Exception {
         connection.getConnection();
         Statement st = connection.getconnection().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
                 ResultSet.CONCUR_UPDATABLE);
@@ -25,6 +28,8 @@ public class AcidenteService {
 //            System.out.println(acidentes[i].toString());
         }
         st.close();
-        return acidentes;
+        response.status(200);
+        response.body(Arrays.toString(acidentes));
+        return response.body();
     }
 }
