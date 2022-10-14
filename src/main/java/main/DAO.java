@@ -11,8 +11,8 @@ public class DAO {
     public static void main(String[] args) throws Exception {
         AcidenteService acidenteService = new AcidenteService();
 
-        get("/acidentes", acidenteService::getALLAcidentes);
-        get("/acidentes/:codigo", acidenteService::getAcidenteByCodigo);
-
+        get("/acidentes", acidenteService::get);
+        get("/acidentes/:codigo", acidenteService::getById);
+        post("/acidentes/save",acidenteService::save);
     }
 }

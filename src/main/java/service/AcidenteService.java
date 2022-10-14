@@ -18,7 +18,7 @@ public class AcidenteService {
     Acidente acidente;
     Acidente[] acidentes;
 
-    public String getALLAcidentes(Request request, Response response) throws Exception {
+    public String get(Request request, Response response) throws Exception {
         connection.getConnection();
         Statement st = connection.getconnection().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
                 ResultSet.CONCUR_UPDATABLE);
@@ -38,14 +38,27 @@ public class AcidenteService {
     }
 
 
-    public String getAcidenteByCodigo(Request request, Response response) throws Exception {
+    public String getById(Request request, Response response) throws Exception {
         connection.getConnection();
         Statement st = connection.getconnection().createStatement();
         ResultSet rs = st.executeQuery("select * from acidente as A where A.codigo=" + request.params("codigo") + ";");
+        rs.next();
         JSONObject meuJson = new JSONObject();
         meuJson.put("Acidente", new Acidente(rs.getInt("codigo"), rs.getString("nome"), rs.getString("descricao")).toString());
         response.status(200);
         response.body(meuJson.toString());
+        return response.body();
+    }
+
+
+    public String save(Request request, Response response) throws Exception {
+        connection.getConnection();
+        Statement st = connection.getconnection().createStatement();
+        int rs = st.executeUpdate("insert into acidente (codigo,nome,descricao) values ('" + request.params("codigo") + "','" + request.params("nome") + "','" + request.params("descricao") + "')");
+        if (rs != 0) {
+            response.status(200);
+            response.body("Item has been inserted");
+        }
         return response.body();
     }
 
