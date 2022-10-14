@@ -12,6 +12,7 @@ public class DAO {
         AcidenteService acidenteService = new AcidenteService();
 
         get("/acidentes", acidenteService::getALLAcidentes);
+        get("/acidentes/:codigo", acidenteService::getAcidenteByCodigo);
 
     }
 }
